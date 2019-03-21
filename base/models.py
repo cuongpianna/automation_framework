@@ -70,34 +70,41 @@ class ModelMetaClass(type):
                 pass
 
         for k, v in mappings.items():
-            # v.base_url = 'http://giadinh.net.vn/'
-            # v.wdf = get_driver()
+            v.base_url = 'http://giadinh.net.vn/'
+            v.wdf = get_driver()
             # v.driver = SeleniumDriver(v.wdf)
             # attrs['driver'] = v.driver
             attrs.pop(k)
         attrs['__mappings__'] = mappings
         attrs['__tabel__'] = name
-        # attrs['driver'] = get_driver()
+        attrs['driver'] = get_driver()
         return super(ModelMetaClass, cls).__new__(cls, name, bases, attrs)
 
 
-class Box(dict, metaclass=ModelMetaClass):
+class Box(metaclass=ModelMetaClass):
     """docstring for Box"""
     def __init__(self, **kwards):
-        super(Box, self).__init__(**kwards)
+        # super(Box, self).__init__(**kwards)
         # self.__table__ = self.__class__.__name__
+        pass
 
     # def __getattr__(self, key):
     #     try:
     #         return self[key]
     #     except KeyError as e:
     #         raise AttributeError(f'{self.__name__} object has not attribute {key}')
+    #
+    # def __setattr__(self, key, value):
+    #     self[key] = value
 
-    def __getattribute__(self, item):
-        super(Box, self).__getattribute__(item)
+    def base_verify_text(self, element):
+        # element.go_to_page()
+        return element.get_text_of_this_element()
 
-    def __setattr__(self, key, value):
-        self[key] = value
+    def __getattr__(self, item):
+        for k, v in self.__mappings__.items():
+            if item == 'verify_text_of' + k:
+                return lambda: self.base_verify_text(v)
 
     def save(self):
         fields = []

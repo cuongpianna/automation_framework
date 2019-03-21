@@ -10,6 +10,6 @@ class User(Box):
                              locator=['//*[@id="TotalBox1"]/div[1]/div[1]/h2/a', 'xpath'])
 
     def verify_text(self):
-        print(1)
-        # self.verify_text_of_element()
+        print('@@@@@')
+        print(self.verify_text_of_box_title())
 
