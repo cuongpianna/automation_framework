@@ -3,7 +3,7 @@ from base.browser_factory import WebDriverFactory
 
 
 def get_driver():
-    # print("print")
+    print("1111")
     wdf = WebDriverFactory('firefox').get_web_driver_instance()
     # driver = wdf.get_web_driver_instance('http://giadinh.net.vn/')
     return wdf
