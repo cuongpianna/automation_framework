@@ -9,7 +9,7 @@ class ElementMetaClass(type):
         return super(ElementMetaClass, cls).__new__(cls, name, bases, attrs)
 
 
-class Element(object, metaclass=ElementMetaClass):
+class Element(object):
     """
     Class Element: represent on the website
     """
@@ -18,10 +18,10 @@ class Element(object, metaclass=ElementMetaClass):
         """
         Init a new element
         :param name: name of element
-        :param locator: => List:  this is a list that contains 2 items.
-                item1: => Str:  locator of element
-                items2: => Str: locator type of element
-                Ex. ['box', 'classname']
+        :param  locator: => List:  this is a list that contains 2 items.
+                item1:   => Str:  locator of element
+                items2:  => Str: locator type of element
+                Ex. locator = ['box', 'classname']
         :param verify:
         """
         self.name = name
@@ -60,6 +60,28 @@ class Element(object, metaclass=ElementMetaClass):
         this_element = self.get_this_element()
         self.driver.element_click(element=this_element)
 
+    def is_element_present(self):
+        this_element = self.get_this_element()
+        return self.driver.is_element_present(element=this_element)
+
+    def is_element_displayed(self):
+        this_element = self.get_this_element()
+        return self.driver.is_element_displayed(element=this_element)
+
+
+class ListElement(Element):
+    def __init__(self, name, locator):
+        super(ListElement, self).__init__(name, locator)
+
+    def get_list_elements(self):
+        list_element = self.driver.get_element_list(self.locator, self.locator_type)
+        return list_element
+
+    def get_text_of_elements(self):
+        list_element = self.get_list_elements()
+        list_text = [item.text for item in list_element]
+        return list_text
+
 
 class LinkElement(Element):
     def __init__(self, name, locator):
@@ -78,7 +100,7 @@ class BoxMetaClass(type):
         self.attrs = attrs
 
     def __new__(cls, name, bases, attrs):
-        _driver = None
+        _driver = get_driver()
 
         if name == 'Model':
             return super(BoxMetaClass, cls).__new__(cls, name, bases, attrs)
@@ -100,8 +122,7 @@ class BoxMetaClass(type):
         # Pass all necessary parameters for Element object. Ex: base_url, driver.
         for k, v in mappings.items():
             v.base_url = 'http://giadinh.net.vn/'
-            v.wdf = get_driver()
-            _driver = v.wdf
+            v.wdf = _driver
             v.driver = SeleniumDriver(v.wdf)
             attrs['driver'] = v.driver
             attrs.pop(k)
@@ -135,6 +156,13 @@ class Box(metaclass=BoxMetaClass):
         element.quit_driver()
         return text
 
+    @staticmethod
+    def base_verify_list_text(element_list):
+        element_list.go_to_page()
+        elements = element_list.get_text_of_elements()
+        element_list.quit_driver()
+        return elements
+
     def __getattr__(self, item):
         """
         Generate dynamic method for subclass when you call method.
@@ -153,6 +181,8 @@ class Box(metaclass=BoxMetaClass):
         for k, v in self.__mappings__.items():
             if item == 'verify_text_of' + k:
                 return lambda: self.base_verify_text(v)
+            elif item == 'verify_list' + k:
+                return lambda: self.base_verify_list_text(v)
 
     def save(self):
         fields = []
@@ -176,8 +206,3 @@ class Box(metaclass=BoxMetaClass):
     #             print(v.get_text_of_this_element())
     #             v.quit_driver()
         # driver.quit()
-
-    @classmethod
-    def saying(cls):
-        print('sayiing......')
-

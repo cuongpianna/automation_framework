@@ -13,7 +13,6 @@ class HomeTest(BaseTest):
         pass
 
     def test_domain(self):
-        print(1)
         self.page.verify_text()
 
 

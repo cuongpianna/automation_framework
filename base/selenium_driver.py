@@ -14,7 +14,7 @@ from utilities.custom_logger import custom_logger
 from utilities.base import convert_text, convert_file_name
 
 
-class SeleniumDriver:
+class SeleniumDriver():
     log = custom_logger(logging.DEBUG)
 
     def __init__(self, driver):
@@ -191,7 +191,7 @@ class SeleniumDriver:
 
     def element_presence_check(self, locator, locator_type='id'):
         """
-                Check if element is present
+            Check if element is present
         """
         try:
             element_list = self.get_element(locator, locator_type)
