@@ -111,7 +111,7 @@ class BoxMetaClass(type):
         if not parents:
             return super(BoxMetaClass, cls).__new__(cls, name, bases, attrs)
 
-        # Get all attrs that is instance of Element class, and store them into ``mappings``
+        # Get all attrs that are instances of Element class, and store them into ``mappings``
         mappings = dict()
         for k, v in attrs.items():
             if isinstance(v, Element):

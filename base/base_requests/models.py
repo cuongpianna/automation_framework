@@ -70,7 +70,7 @@ class BoxMetaClass(type):
                 attrs['url'] = value.url
                 _url = value.url
                 removes[key] = value
-            # Get all attrs that is instance of Element class.
+            # Get all attrs that are instances of Element class.
             # And store them into ``mappings``.
             if isinstance(value, Element):
                 _session = HTMLSession()
