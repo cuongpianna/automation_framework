@@ -102,7 +102,7 @@ class WebDriverFactory(metaclass=MetaClassSingleton):
 
     def get_web_driver_instance(self):
         """
-       Get WebDriver Instance based on the browser configuration
+        Get WebDriver Instance based on the browser configuration
 
         Returns:
             'WebDriver Instance'

@@ -14,3 +14,6 @@ class User(Box):
 
     def verify_text(self):
         print(self.verify_list_news_list())
+
+    def test(self):
+        print(self.verify_text_of_box_title())

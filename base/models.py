@@ -74,7 +74,7 @@ class ListElement(Element):
         super(ListElement, self).__init__(name, locator)
 
     def get_list_elements(self):
-        list_element = self.driver.get_element_list(self.locator, self.locator_type)
+        list_element = self.driver.get_this_element_list(self.locator, self.locator_type)
         return list_element
 
     def get_text_of_elements(self):
@@ -153,14 +153,14 @@ class Box(metaclass=BoxMetaClass):
     def base_verify_text(element):
         element.go_to_page()
         text = element.get_text_of_this_element()
-        element.quit_driver()
+        # element.quit_driver()
         return text
 
     @staticmethod
     def base_verify_list_text(element_list):
         element_list.go_to_page()
         elements = element_list.get_text_of_elements()
-        element_list.quit_driver()
+        # element_list.quit_driver()
         return elements
 
     def __getattr__(self, item):

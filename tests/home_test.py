@@ -15,6 +15,9 @@ class HomeTest(BaseTest):
     def test_domain(self):
         self.page.verify_text()
 
+    def test_demo(self):
+        self.page.test()
+
 
 if __name__ == '__main__':
     unittest.main()

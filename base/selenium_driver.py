@@ -14,7 +14,7 @@ from utilities.custom_logger import custom_logger
 from utilities.base import convert_text, convert_file_name
 
 
-class SeleniumDriver():
+class SeleniumDriver:
     log = custom_logger(logging.DEBUG)
 
     def __init__(self, driver):
