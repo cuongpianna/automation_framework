@@ -14,12 +14,20 @@ from base.base_requests.models import Box, ElementList, URL
 class Test(Box):
     url = URL(url='https://tuoitre.vn/')
     _box_title = ElementList(name='test',
-                             locator=['//*[@id="content"]/div/div[1]/div[2]/div[4]/ul/li/h2/a', 'xpath'])
+                             locator=['//*[@id="content"]/div/div[1]/div[2]/div[2]//a', 'xpath'],
+                             query='''
+                             select Title,SubTitle,Sapo,TypeId as TypeNewsposition,Avatar,AvatarDesc,Url,ZoneId as 
+                             ZoneIdNewsposition, ObjectType ZoneIdForNews,[Order] as SortOrder,DistributionDate,
+                             LastModifiedDate, CONVERT(varchar(30), NewsId) as NewsId  FROM  NewsPosition  
+                             WHERE TypeId=1 AND ZoneId=0 and [Order]>0
+                             ''',
+                             data=[4, 'sau']
+                             )
 
 
-class Test2(Box):
-    url = URL(url='https://tuoitre.vn/')
-    box_title = ElementList('name', 'test')
+# class Test2(Box):
+#     url = URL(url='https://tuoitre.vn/')
+#     box_title = ElementList('name', 'test')
 
 
 if __name__ == '__main__':

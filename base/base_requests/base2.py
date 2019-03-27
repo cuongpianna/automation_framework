@@ -1,8 +1,6 @@
 from requests_html import HTMLSession
 
 from base.base_requests.base import SessionBase
-from db.main import DatabaseBuilder
-from config import CONFIG_SQL
 
 
 class URL(object):
@@ -13,30 +11,22 @@ class URL(object):
         return self.url
 
 
+class HTMLPage(object):
+    def __init__(self, html_page):
+        self.i = self.test()
+
+    def test(self):
+        return 1
+
+
 class Element(object):
     """
         Class Element: represent element on the website
     """
-    def __init__(self, name, locator, query, data=None):
+    def __init__(self, name, locator):
         self.name = name
         self.locator = locator[0]
         self.locator_type = locator[1]
-        self.query = query
-        self.db = DatabaseBuilder(config=CONFIG_SQL)
-
-        # Get data depends on config
-        # Ex:
-        # self.query = 'select * from newscontent'
-        # self.data = [4, 'dau']
-        # Store 4 first news from database, by ``self.query`` into ``self.data``
-        if not data:
-            self.data = self.db.query(query)
-        elif type(data) is list:
-            result = self.db.query(query)
-            if data[1] == 'sau':
-                self.data = result[len(result)-data[0]:]
-            elif data[1] == 'dau':
-                self.data = result[:data[0]]
 
     def __str__(self):
         return '{} has name: \t{}'.format(self.__class__.__name__, self.name)
@@ -52,8 +42,8 @@ class ElementList(Element):
     Class ElementList: represents list of element on the website
     """
 
-    def __init__(self, name, locator, query, data=None):
-        super(ElementList, self).__init__(name, locator, query, data)
+    def __init__(self, name, locator):
+        super(ElementList, self).__init__(name, locator)
 
     def get_this_element_list(self):
         html = self.get_response()
@@ -80,6 +70,20 @@ class BoxMetaClass(type):
         parents = [b for b in bases if isinstance(b, BoxMetaClass)]
         if not parents:
             return super(BoxMetaClass, cls).__new__(cls, name, bases, attrs)
+
+        # Check does class have URL object?
+        # If does: using requests to get html content
+        # If does not: get <html> content to verify
+        flag = True
+        for key, value in attrs.items():
+            if isinstance(value, URL):
+                flag = False
+
+        if not flag:
+            for key, value in attrs.items():
+                if isinstance(value, Element):
+                    pass
+
         mappings = dict()
         removes = dict()
         for key, value in attrs.items():

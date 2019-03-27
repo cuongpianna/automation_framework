@@ -9,6 +9,7 @@ idna==2.8
 lxml==4.3.2
 parse==1.11.1
 pyee==5.0.0
+pymssql==2.1.4
 pyppeteer==0.0.25
 pyquery==1.4.0
 requests==2.21.0
